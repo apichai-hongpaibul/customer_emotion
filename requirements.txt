@@ -1,0 +1,5 @@
+matplotlib>=3.4.3
+pandas>=1.3.3
+SoundFile>=0.10.3.post1
+librosa>=0.8.1
+tqdm>=4.62.3

@@ -102,12 +102,12 @@ def extract_feature(file_name, **kwargs):
 
 
 def write_model(model):
-    with open('model.pickle', 'wb') as handle:
+    with open('./models/model.pickle', 'wb') as handle:
         pickle.dump(model, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def read_model():
-        return pickle.load(open("model.pickle", "rb"))
+        return pickle.load(open("./models/model.pickle", "rb"))
 
 
 def get_best_estimators(classification):

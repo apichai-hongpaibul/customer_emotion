@@ -1,7 +1,6 @@
 import os
 from utils import read_model
-import streamlit as st
-import soundfile
+import argparse
 
 
 IMPRO = {
@@ -36,20 +35,16 @@ def predict_all_file(model, folder):
             result = model.predict(file_name)
             print(file_name, f"TAG {tag} predict {result}")
 
-
-def main():
-    st.title("Simple Emotion score from voice file")
-    detector = read_model()
-    st.subheader("current model accuracy score: {:.3f}%".format(detector.test_score()*100))
-    uploaded_file = st.file_uploader("Upload recorded Files",type=['wav','WAV'])
-    if uploaded_file is not None:
-        _, samplerate = soundfile.read(uploaded_file.name)
-        file_details = {"FileName":uploaded_file.name,"FileType":uploaded_file.type, "samplerate": samplerate ,"FileSize":uploaded_file.size}
-        st.write(file_details)
-        #soundfile.write('test.wav', data, 16000, subtype='PCM_16')
-        result = detector.predict(uploaded_file.name)
-        score = 5 if result != 'angry' else 0
-        st.write(f"customer emaion {result} score {score}")
-
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--test", action='store_true', help="simple predict for test.wav")
+    args = parser.parse_args()
+    detector = read_model()
+    print("Test accuracy score: {:.3f}%".format(detector.test_score()*100))
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    data_folder = os.path.join(current_path, "data")
+    if args.test:
+        result = detector.predict("test.wav")
+        print("test.wav", result)
+    else:
+        predict_all_file(detector, data_folder)

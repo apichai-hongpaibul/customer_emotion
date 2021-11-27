@@ -39,7 +39,7 @@ def predict_all_file(model, folder):
 
 def main():
     st.title("Simple Emotion score from voice file")
-    detector = read_model()
+    detector = read_model(True)
     st.subheader("current model accuracy score: {:.3f}%".format(detector.test_score()*100))
     uploaded_file = st.file_uploader("Upload recorded Files",type=['wav','WAV'])
     if uploaded_file is not None:

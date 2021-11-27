@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 import os
 from convert_wavs import convert_audio
+from joblib import dump, load
 
 
 AVAILABLE_EMOTIONS = {
@@ -101,12 +102,18 @@ def extract_feature(file_name, **kwargs):
     return result
 
 
-def write_model(model):
-    with open('./models/model.pickle', 'wb') as handle:
-        pickle.dump(model, handle, protocol=pickle.HIGHEST_PROTOCOL)
+def write_model(model, use_job_lib=False):
+    if use_job_lib:
+        dump(model, './models/model.joblib')
+    else:
+        with open('./models/model.pickle', 'wb') as handle:
+            pickle.dump(model, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def read_model():
+def read_model(use_job_lib=False):
+    if use_job_lib:
+        return load('./models/model.joblib')
+    else:
         return pickle.load(open("./models/model.pickle", "rb"))
 
 
